@@ -1,4 +1,4 @@
-const CACHE_NAME = "hibig-english-planner-v1";
+const CACHE_NAME = "hibig-english-planner-v2";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
