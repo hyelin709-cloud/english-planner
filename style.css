@@ -1,50 +1,700 @@
-/* 복습 날짜 하이라이트 및 녹음기 스타일 */
-.highlight-review {
-  background-color: var(--accent-color) !important;
-  color: white !important;
-  font-weight: bold;
+/* =========================================================
+   하이빅쌤 30일 완강 개인 플래너 - 프리미엄 파스텔 UI
+   ========================================================= */
+
+:root {
+  /* 파스텔 & 소프트 컬러 팔레트 */
+  --primary-color: #5c6ac4;         /* 차분하고 세련된 인디고 블루 */
+  --primary-light: #8898f5;        /* 소프트 파스텔 블루 */
+  --primary-bg: #f0f3ff;           /* 연한 블루 백그라운드 */
+  --accent-color: #ff7e67;          /* 코랄 핑크 (강조/복습) */
+  --accent-light: #fff0ed;
+  --success-color: #48bb78;         /* 포근한 에메랄드 그린 */
+  --success-bg: #e6fffa;
+  
+  --bg-color: #f7f9fc;              /* 메인 배경: 눈이 편안한 오프화이트 */
+  --card-bg: #ffffff;              /* 카드 배경: 순백색 */
+  --text-primary: #2d3748;         /* 메인 텍스트: 다크 찰콜 */
+  --text-secondary: #718096;       /* 보조 텍스트: 슬레이트 그레이 */
+  --border-color: #edf2f7;         /* 테두리: 은은한 분리선 */
+  
+  /* 고급스러운 그림자 & 라운드 */
+  --shadow-sm: 0 2px 8px rgba(149, 157, 165, 0.08);
+  --shadow-md: 0 8px 24px rgba(149, 157, 165, 0.12);
+  --shadow-lg: 0 12px 32px rgba(92, 106, 196, 0.15);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 다크 모드 파스텔 스킴 */
+[data-theme="dark"] {
+  --primary-color: #7f9cf5;
+  --primary-light: #a3b8f8;
+  --primary-bg: #2a3447;
+  --accent-color: #ff9b85;
+  --accent-light: #3d2b27;
+  --success-color: #68d391;
+  --success-bg: #1c3d33;
+  
+  --bg-color: #1a202c;
+  --card-bg: #2d3748;
+  --text-primary: #f7fafc;
+  --text-secondary: #a0aec0;
+  --border-color: #4a5568;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* 기본 리셋 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+  letter-spacing: -0.2px;
+}
+
+/* 상단 헤더 / 앱바 */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .app-bar {
+  background-color: rgba(45, 55, 72, 0.9);
+}
+
+.app-bar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-bar-title .icon {
+  font-size: 1.4rem;
+}
+
+.app-bar-title h1 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  letter-spacing: -0.5px;
+}
+
+.app-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: var(--bg-color);
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+.install-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(92, 106, 196, 0.3);
+  transition: var(--transition);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* 메인 컨테이너 */
+.main-container {
+  max-width: 500px; /* 모바일 앱 가로 폭 최적화 */
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 카드 공통 스타일 */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+/* 1. 진행률 카드 */
+.progress-card {
+  background: linear-gradient(145deg, var(--card-bg), var(--primary-bg));
+  border: none;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-header h2 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.streak-badge {
+  background-color: #feebc8;
+  color: #c05621;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+}
+
+.percent-badge {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  box-shadow: 0 2px 8px rgba(92, 106, 196, 0.3);
+}
+
+.progress-track {
+  width: 100%;
+  height: 12px;
+  background-color: rgba(226, 232, 240, 0.8);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  border-radius: 10px;
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* 2. 루틴 카운터 바 */
+.routine-card {
+  padding: 16px;
+}
+
+.routine-card h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.routine-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.routine-tag {
+  flex: 1;
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.tag-1 { background-color: var(--primary-bg); color: var(--primary-color); }
+.tag-2 { background-color: var(--success-bg); color: var(--success-color); }
+.tag-3 { background-color: var(--accent-light); color: var(--accent-color); }
+
+/* 3. 오늘의 추천 학습 (메인 카드 강조) */
+.today-card {
+  border: 2px solid var(--primary-light);
+  background: linear-gradient(135deg, rgba(92, 106, 196, 0.05), var(--card-bg));
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.today-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background-color: var(--primary-color);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-header h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.today-content {
+  margin-top: 10px;
+  padding-left: 2px;
+}
+
+.today-item-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.today-item-meta {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-weight: 500;
 }
 
 .today-review-alert {
-  background-color: #fff3cd;
-  color: #856404;
-  padding: 6px 10px;
+  background-color: #fffaf0;
+  color: #dd6b20;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
-  margin-bottom: 8px;
-  border: 1px solid #ffeeba;
+  margin-bottom: 10px;
+  border: 1px solid #feebc8;
+  font-weight: 600;
+}
+
+/* 4. 개인 노트 탭 */
+.notes-section {
+  padding: 16px 20px;
+}
+
+.note-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 8px 4px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: var(--transition);
+}
+
+.tab-btn.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.note-box textarea {
+  width: 100%;
+  height: 70px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  resize: none;
+  outline: none;
+  transition: var(--transition);
+}
+
+.note-box textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(92, 106, 196, 0.15);
+}
+
+.status-text {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  float: right;
+  margin-top: 4px;
+}
+
+/* 검색바 & 아코디언 버튼 */
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 36px 10px 38px;
+  border-radius: 25px;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  outline: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.clear-btn {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.accordion-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Day별 카드 리스트 */
+.level-group {
+  margin-bottom: 14px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.level-header {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
+  background-color: var(--card-bg);
+}
+
+.level-title-area h3 {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.level-title-area p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+
+/* 날짜 표시 영역 */
+.study-date-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.study-date-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--success-color);
+  background-color: var(--success-bg);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.study-date-text.uncompleted {
+  color: var(--text-secondary);
+  background-color: rgba(0, 0, 0, 0.04);
+  font-weight: 500;
+}
+
+.date-picker-input {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-size: 0.72rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  outline: none;
+}
+
+.level-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background-color: var(--primary-bg);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.arrow-icon {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  transition: transform 0.25s ease;
+}
+
+.level-group.collapsed .arrow-icon { transform: rotate(-90deg); }
+.level-group.collapsed .day-body { display: none; }
+
+/* Day 내부 바디 */
+.day-body {
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+  background-color: rgba(247, 249, 252, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-theme="dark"] .day-body {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.day-section-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* 미션 체크리스트 */
+.mission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background-color: var(--card-bg);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.mission-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mission-item.completed span {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* 강의 항목 리스트 */
+.lessons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lesson-item {
+  padding: 10px 12px;
+  background-color: var(--card-bg);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.lesson-item.completed {
+  background-color: var(--success-bg);
+  border-color: rgba(72, 187, 120, 0.2);
+}
+
+.lesson-item.completed .lesson-title {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+/* 감성 체크박스 애니메이션 */
+.checkbox-container {
+  position: relative;
+  padding-left: 22px;
+  cursor: pointer;
+}
+
+.checkbox-container input { opacity: 0; width: 0; height: 0; }
+
+.checkmark {
+  position: absolute;
+  top: -9px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2px solid var(--text-secondary);
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+  transform: scale(1.08); /* 클릭 시 팝 애니메이션 */
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after { display: block; }
+
+.lesson-info { flex: 1; }
+.lesson-title { font-size: 0.85rem; font-weight: 600; line-height: 1.3; }
+.lesson-duration { font-size: 0.73rem; color: var(--text-secondary); margin-top: 2px; }
+
+/* 복습 및 녹음 박스 */
+.review-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.review-tag {
+  font-size: 0.72rem;
+  background-color: var(--card-bg);
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.highlight-review {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  border-color: var(--accent-color) !important;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(255, 126, 103, 0.3);
 }
 
 .recorder-box {
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: rgba(0,0,0,0.02);
-  padding: 8px 10px;
+  background-color: var(--card-bg);
+  padding: 10px 12px;
   border-radius: var(--radius-sm);
-  margin-top: 4px;
+  border: 1px solid var(--border-color);
 }
 
 .rec-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 12px;
+  padding: 6px 12px;
+  border-radius: 15px;
   font-size: 0.75rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: var(--transition);
 }
 
 .rec-btn.recording {
-  background-color: #d32f2f;
-  animation: blink 1s infinite;
+  background-color: #e53e3e;
+  animation: pulse 1.2s infinite;
 }
 
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 .rec-status-text {
@@ -53,6 +703,32 @@
 }
 
 .audio-player {
-  height: 30px;
-  max-width: 180px;
+  height: 32px;
+  max-width: 170px;
+}
+
+.day-memo-input {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  resize: none;
+  outline: none;
+  transition: var(--transition);
+}
+
+.day-memo-input:focus {
+  border-color: var(--primary-color);
+}
+
+.app-footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
 }
