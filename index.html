@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>하이빅쌤 영어 완강 플래너</title>
+  <title>하이빅쌤 30일 완강 개인 플래너</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3f51b5">
@@ -17,10 +17,10 @@
   <header class="app-bar">
     <div class="app-bar-title">
       <span class="icon">🎓</span>
-      <h1>하이빅쌤 영어 완강 플래너</h1>
+      <h1>30일 완강 개인 플래너</h1>
     </div>
     <div class="app-bar-actions">
-      <button id="theme-toggle-btn" class="icon-btn" aria-label="다크모드 토글" title="다크모드 전환">
+      <button id="theme-toggle-btn" class="icon-btn" aria-label="다크모드 토글">
         <span id="theme-icon">🌙</span>
       </button>
       <button id="pwa-install-btn" class="install-btn hidden">
@@ -31,9 +31,10 @@
 
   <main class="main-container">
 
+    <!-- 대시보드 및 진행률 -->
     <section class="card progress-card">
       <div class="progress-header">
-        <h2>전체 학습 진행률</h2>
+        <h2>📊 전체 학습 진행률</h2>
         <span id="progress-percent" class="percent-badge">0%</span>
       </div>
       
@@ -47,6 +48,17 @@
       </div>
     </section>
 
+    <!-- 하루 1시간 루틴 가이드 -->
+    <section class="card routine-card">
+      <h3>⏱️ 하루 1시간 완강 루틴</h3>
+      <div class="routine-badges">
+        <span class="routine-tag tag-1">🎧 강의 학습 (40~45분)</span>
+        <span class="routine-tag tag-2">🗣️ 말하기/따라하기 (10분)</span>
+        <span class="routine-tag tag-3">📝 기록 및 메모 (5분)</span>
+      </div>
+    </section>
+
+    <!-- 오늘의 추천 학습 -->
     <section class="card today-card">
       <div class="card-header">
         <span class="card-icon">🔥</span>
@@ -55,10 +67,30 @@
       <div id="today-lesson-container" class="today-content"></div>
     </section>
 
+    <!-- 개인 공부용 노트 섹션 (구동사 / 발음 노트) -->
+    <section class="card notes-section">
+      <div class="note-tabs">
+        <button id="tab-phrasal-btn" class="tab-btn active">📖 구동사 노트</button>
+        <button id="tab-pron-btn" class="tab-btn">🗣️ 발음 노트</button>
+      </div>
+
+      <div id="phrasal-note-box" class="note-box">
+        <textarea id="phrasal-input" placeholder="오늘 배운 주요 구동사를 기록하세요 (예: pick up - 집어들다 / 나중에 태우러 가다)"></textarea>
+      </div>
+
+      <div id="pron-note-box" class="note-box hidden">
+        <textarea id="pron-input" placeholder="헷갈리는 발음이나 연음 법칙을 기록하세요 (예: How do you -> [하으ㄹ여])"></textarea>
+      </div>
+      <div class="note-footer">
+        <span id="note-status" class="status-text">자동 저장됨</span>
+      </div>
+    </section>
+
+    <!-- 검색 및 아코디언 조작 -->
     <section class="controls-section">
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="강의 제목 또는 ID 검색...">
+        <input type="text" id="search-input" placeholder="Day, 목표, 강의 제목 검색...">
         <button id="search-clear-btn" class="clear-btn hidden">✕</button>
       </div>
       <div class="accordion-actions">
@@ -68,26 +100,13 @@
       </div>
     </section>
 
+    <!-- Day별 플래너 영역 -->
     <section id="curriculum-container" class="curriculum-container"></section>
-
-    <section class="card memo-card">
-      <div class="card-header">
-        <span class="card-icon">📝</span>
-        <h3>학습 메모 & 완강 다짐</h3>
-      </div>
-      <div class="memo-content">
-        <textarea id="memo-input" placeholder="오늘 배운 주요 어휘, 복습할 내용, 완강 다짐을 기록하세요..."></textarea>
-        <div class="memo-footer">
-          <span id="memo-status" class="memo-status-text">자동 저장됨</span>
-          <button id="save-memo-btn" class="btn btn-primary">저장하기</button>
-        </div>
-      </div>
-    </section>
 
   </main>
 
   <footer class="app-footer">
-    <p>© 2026 하이빅쌤 영어 완강 플래너 PWA | Offline Supported</p>
+    <p>© 2026 하이빅쌤 30일 완강 플래너 | Personal Study Companion</p>
   </footer>
 
   <script src="data.js"></script>
