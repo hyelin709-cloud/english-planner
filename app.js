@@ -1,21 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const KEY_COMPLETED = "hibig_completed_lessons";
-  const KEY_MISSIONS = "hibig_completed_missions";
+  // LocalStorage 키 정의
+  const KEY_COMPLETED_LESSONS = "hibig_completed_lessons";
+  const KEY_COMPLETED_MISSIONS = "hibig_completed_missions";
   const KEY_COMPLETED_DATES = "hibig_completed_dates";
-  const KEY_MEMOS = "hibig_day_memos";
-  const KEY_PHRASAL = "hibig_phrasal_notes";
-  const KEY_PRON = "hibig_pron_notes";
+  const KEY_DAY_MEMOS = "hibig_day_memos";
+  const KEY_PHRASAL_NOTES = "hibig_phrasal_notes";
+  const KEY_PRON_NOTES = "hibig_pron_notes";
   const KEY_THEME = "hibig_theme";
   const KEY_STREAK_DATES = "hibig_streak_dates";
 
-  let completedIds = new Set(JSON.parse(localStorage.getItem(KEY_COMPLETED) || "[]"));
-  let completedMissions = new Set(JSON.parse(localStorage.getItem(KEY_MISSIONS) || "[]"));
+  // 상태 관리 (localStorage 데이터 복원)
+  let completedIds = new Set(JSON.parse(localStorage.getItem(KEY_COMPLETED_LESSONS) || "[]"));
+  let completedMissions = new Set(JSON.parse(localStorage.getItem(KEY_COMPLETED_MISSIONS) || "[]"));
   let completedDates = JSON.parse(localStorage.getItem(KEY_COMPLETED_DATES) || "{}");
-  let dayMemos = JSON.parse(localStorage.getItem(KEY_MEMOS) || "{}");
+  let dayMemos = JSON.parse(localStorage.getItem(KEY_DAY_MEMOS) || "{}");
   let streakDates = new Set(JSON.parse(localStorage.getItem(KEY_STREAK_DATES) || "[]"));
   let currentTheme = localStorage.getItem(KEY_THEME) || "light";
   let deferredPrompt = null;
 
+  // DOM 요소 바인딩 (index.html id/class 매핑)
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const themeIcon = document.getElementById("theme-icon");
   const pwaInstallBtn = document.getElementById("pwa-install-btn");
@@ -27,12 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const todayDayTitle = document.getElementById("today-day-title");
   const todayContainer = document.getElementById("today-lesson-container");
   const streakBadge = document.getElementById("streak-badge");
+
   const searchInput = document.getElementById("search-input");
   const searchClearBtn = document.getElementById("search-clear-btn");
   const expandAllBtn = document.getElementById("expand-all-btn");
   const collapseAllBtn = document.getElementById("collapse-all-btn");
   const curriculumContainer = document.getElementById("curriculum-container");
 
+  // 개인 노트 탭 요소
   const tabPhrasalBtn = document.getElementById("tab-phrasal-btn");
   const tabPronBtn = document.getElementById("tab-pron-btn");
   const phrasalBox = document.getElementById("phrasal-note-box");
@@ -41,30 +46,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const pronInput = document.getElementById("pron-input");
   const noteStatus = document.getElementById("note-status");
 
+  // 1. 다크/라이트 테마 적용
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
-    themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+    if (themeIcon) {
+      themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
     localStorage.setItem(KEY_THEME, theme);
   }
   applyTheme(currentTheme);
 
-  themeToggleBtn.addEventListener("click", () => {
-    currentTheme = currentTheme === "light" ? "dark" : "light";
-    applyTheme(currentTheme);
-  });
-
-  const allLessons = [];
-  CURRICULUM_DATA.forEach(item => {
-    item.lessons.forEach(lesson => {
-      allLessons.push({ ...lesson, day: item.day, goal: item.goal });
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      currentTheme = currentTheme === "light" ? "dark" : "light";
+      applyTheme(currentTheme);
     });
-  });
+  }
 
-  // 연속 학습 일수 계산
+  // 2. CURRICULUM_DATA 기반 전체 레슨 맵 구성
+  const allLessons = [];
+  if (typeof CURRICULUM_DATA !== "undefined" && Array.isArray(CURRICULUM_DATA)) {
+    CURRICULUM_DATA.forEach(dayItem => {
+      if (dayItem.lessons && Array.isArray(dayItem.lessons)) {
+        dayItem.lessons.forEach(lesson => {
+          allLessons.push({
+            ...lesson,
+            day: dayItem.day,
+            goal: dayItem.goal
+          });
+        });
+      }
+    });
+  }
+
+  // 3. 연속 공부 일수 (Streak) 계산
   function updateStreak() {
-    const sorted = Array.from(streakDates).sort();
-    let streak = 0;
+    if (!streakBadge) return;
     const today = new Date().toISOString().split("T")[0];
+    let streak = 0;
 
     if (streakDates.has(today)) {
       streak = 1;
@@ -82,13 +101,21 @@ document.addEventListener("DOMContentLoaded", () => {
     streakBadge.textContent = `🔥 ${streak}일 연속`;
   }
 
+  // 4. Day별 카드 및 리스트 생성 (렌더링)
   function renderCurriculum(filterQuery = "") {
+    if (!curriculumContainer) return;
     curriculumContainer.innerHTML = "";
     const query = filterQuery.trim().toLowerCase();
 
+    if (typeof CURRICULUM_DATA === "undefined" || !Array.isArray(CURRICULUM_DATA)) {
+      curriculumContainer.innerHTML = `<div class="card" style="text-align:center; color:var(--text-secondary);">data.js 데이터를 불러올 수 없습니다.</div>`;
+      return;
+    }
+
     CURRICULUM_DATA.forEach(dayData => {
+      // 레슨 및 검색 필터링
       const filteredLessons = dayData.lessons.filter(l => 
-        l.title.toLowerCase().includes(query) || l.id.toLowerCase().includes(query)
+        l.title.toLowerCase().includes(query) || (l.id && l.id.toLowerCase().includes(query))
       );
 
       const isMatchingDay = dayData.day.toLowerCase().includes(query) || dayData.goal.toLowerCase().includes(query);
@@ -101,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const dayCompletedCount = dayData.lessons.filter(l => completedIds.has(l.id)).length;
       const isDayFullyDone = dayCompletedCount === dayData.lessons.length && dayData.lessons.length > 0;
       
+      // Day 전체 완료 시 완강 날짜 저장
       if (isDayFullyDone && !completedDates[dayData.day]) {
         const todayStr = new Date().toLocaleDateString("ko-KR", { month: "short", day: "numeric" });
         completedDates[dayData.day] = todayStr;
@@ -111,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ? `<span class="date-badge">✓ ${completedDates[dayData.day]} 완료</span>` 
         : '';
 
-      // 미션 HTML
+      // 미션 영역 HTML
       let missionsHtml = '';
       if (dayData.mission && dayData.mission.length > 0) {
         missionsHtml = `
@@ -131,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       }
 
-      // 복습 일정 HTML
+      // 권장 복습 일정 HTML
       let reviewHtml = '';
       if (dayData.review && dayData.review.length > 0) {
         reviewHtml = `
@@ -170,6 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
+      // 강의 목록 생성 및 체크박스 바인딩
       const lessonsList = dayCard.querySelector(".lessons-list");
       const targetLessons = query !== "" && !isMatchingDay ? filteredLessons : dayData.lessons;
 
@@ -192,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lessonsList.appendChild(lessonEl);
       });
 
+      // Day별 메모 복원 및 실시간 자동 저장
       const memoInput = dayCard.querySelector(".day-memo-input");
       if (dayMemos[dayData.day]) {
         memoInput.value = dayMemos[dayData.day];
@@ -199,13 +229,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       memoInput.addEventListener("input", (e) => {
         dayMemos[dayData.day] = e.target.value;
-        localStorage.setItem(KEY_MEMOS, JSON.stringify(dayMemos));
+        localStorage.setItem(KEY_DAY_MEMOS, JSON.stringify(dayMemos));
       });
 
+      // 클릭 시 아코디언 토글 방지
       dayCard.querySelector(".day-body").addEventListener("click", (e) => {
         e.stopPropagation();
       });
 
+      // Header 클릭 시 카드 접기/펼치기
       const header = dayCard.querySelector(".level-header");
       header.addEventListener("click", () => {
         dayCard.classList.toggle("collapsed");
@@ -219,34 +251,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 5. 전체 진행률 업데이트
   function updateProgress() {
     const total = allLessons.length;
     const completed = completedIds.size;
     const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
 
-    progressBarFill.style.width = `${percent}%`;
-    progressPercent.textContent = `${percent}%`;
-    completedCountEl.textContent = completed;
-    totalCountEl.textContent = total;
-    remainingCountText.textContent = `남은 강의: ${total - completed}강`;
+    if (progressBarFill) progressBarFill.style.width = `${percent}%`;
+    if (progressPercent) progressPercent.textContent = `${percent}%`;
+    if (completedCountEl) completedCountEl.textContent = completed;
+    if (totalCountEl) totalCountEl.textContent = total;
+    if (remainingCountText) remainingCountText.textContent = `남은 강의: ${total - completed}강`;
 
     renderTodayLesson();
     updateStreak();
   }
 
+  // 6. 오늘의 추천 학습 카드 업데이트
   function renderTodayLesson() {
+    if (!todayContainer) return;
     const nextLesson = allLessons.find(l => !completedIds.has(l.id));
 
     if (!nextLesson) {
-      todayDayTitle.textContent = "🏆 30일 완강 달성!";
+      if (todayDayTitle) todayDayTitle.textContent = "🏆 30일 완강 달성!";
       todayContainer.innerHTML = `
-        <div class="today-item-title" style="color:var(--primary-color);">🎉 축하합니다! 30일 완강을 성황리에 마쳤습니다!</div>
+        <div class="today-item-title" style="color:var(--primary-color);">🎉 축하합니다! 30일 완강을 성공적으로 마쳤습니다!</div>
         <div class="today-item-meta">나만의 소중한 영어 스피킹 습관이 완성되었습니다. 계속해서 활용해 보세요!</div>
       `;
       return;
     }
 
-    todayDayTitle.textContent = `🔥 오늘의 추천 학습 (${nextLesson.day})`;
+    if (todayDayTitle) todayDayTitle.textContent = `🔥 오늘의 추천 학습 (${nextLesson.day})`;
     todayContainer.innerHTML = `
       <div class="today-item-title">${nextLesson.title}</div>
       <div class="today-item-meta">
@@ -256,129 +291,158 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  curriculumContainer.addEventListener("change", (e) => {
-    // 강의 체크박스
-    if (e.target.classList.contains("lesson-check")) {
-      const lessonId = e.target.dataset.id;
-      const lessonItem = e.target.closest(".lesson-item");
+  // 7. 강의 / 미션 체크박스 이벤트 바인딩 (Event Delegation)
+  if (curriculumContainer) {
+    curriculumContainer.addEventListener("change", (e) => {
+      // 강의 체크
+      if (e.target.classList.contains("lesson-check")) {
+        const lessonId = e.target.dataset.id;
+        const lessonItem = e.target.closest(".lesson-item");
 
-      if (e.target.checked) {
-        completedIds.add(lessonId);
-        lessonItem.classList.add("completed");
+        if (e.target.checked) {
+          completedIds.add(lessonId);
+          if (lessonItem) lessonItem.classList.add("completed");
 
-        // 오늘 날짜 streak에 기록
-        const todayStr = new Date().toISOString().split("T")[0];
-        streakDates.add(todayStr);
-        localStorage.setItem(KEY_STREAK_DATES, JSON.stringify(Array.from(streakDates)));
-      } else {
-        completedIds.delete(lessonId);
-        lessonItem.classList.remove("completed");
-      }
+          // 연속 공부 기록(streak) 업데이트
+          const todayStr = new Date().toISOString().split("T")[0];
+          streakDates.add(todayStr);
+          localStorage.setItem(KEY_STREAK_DATES, JSON.stringify(Array.from(streakDates)));
+        } else {
+          completedIds.delete(lessonId);
+          if (lessonItem) lessonItem.classList.remove("completed");
+        }
 
-      localStorage.setItem(KEY_COMPLETED, JSON.stringify(Array.from(completedIds)));
-      updateProgress();
+        localStorage.setItem(KEY_COMPLETED_LESSONS, JSON.stringify(Array.from(completedIds)));
+        updateProgress();
 
-      const dayCard = e.target.closest(".level-group");
-      if (dayCard) {
-        const dayStr = dayCard.dataset.day;
-        const dayData = CURRICULUM_DATA.find(d => d.day === dayStr);
-        if (dayData) {
-          const count = dayData.lessons.filter(l => completedIds.has(l.id)).length;
-          const badge = dayCard.querySelector(".badge");
-          if (badge) badge.textContent = `${count}/${dayData.lessons.length}강`;
+        // Day 상단 뱃지 카운트 실시간 업데이트
+        const dayCard = e.target.closest(".level-group");
+        if (dayCard) {
+          const dayStr = dayCard.dataset.day;
+          const dayData = CURRICULUM_DATA.find(d => d.day === dayStr);
+          if (dayData) {
+            const count = dayData.lessons.filter(l => completedIds.has(l.id)).length;
+            const badge = dayCard.querySelector(".badge");
+            if (badge) badge.textContent = `${count}/${dayData.lessons.length}강`;
+          }
         }
       }
-    }
 
-    // 미션 체크박스
-    if (e.target.classList.contains("mission-check")) {
-      const mId = e.target.dataset.mid;
-      const mItem = e.target.closest(".mission-item");
+      // 미션 체크
+      if (e.target.classList.contains("mission-check")) {
+        const mId = e.target.dataset.mid;
+        const mItem = e.target.closest(".mission-item");
 
-      if (e.target.checked) {
-        completedMissions.add(mId);
-        mItem.classList.add("completed");
-      } else {
-        completedMissions.delete(mId);
-        mItem.classList.remove("completed");
+        if (e.target.checked) {
+          completedMissions.add(mId);
+          if (mItem) mItem.classList.add("completed");
+        } else {
+          completedMissions.delete(mId);
+          if (mItem) mItem.classList.remove("completed");
+        }
+        localStorage.setItem(KEY_COMPLETED_MISSIONS, JSON.stringify(Array.from(completedMissions)));
       }
-      localStorage.setItem(KEY_MISSIONS, JSON.stringify(Array.from(completedMissions)));
-    }
-  });
+    });
+  }
 
-  searchInput.addEventListener("input", (e) => {
-    const val = e.target.value;
-    searchClearBtn.classList.toggle("hidden", val === "");
-    renderCurriculum(val);
-  });
+  // 8. 검색 기능
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      const val = e.target.value;
+      if (searchClearBtn) searchClearBtn.classList.toggle("hidden", val === "");
+      renderCurriculum(val);
+    });
+  }
 
-  searchClearBtn.addEventListener("click", () => {
-    searchInput.value = "";
-    searchClearBtn.classList.add("hidden");
-    renderCurriculum("");
-  });
+  if (searchClearBtn) {
+    searchClearBtn.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      searchClearBtn.classList.add("hidden");
+      renderCurriculum("");
+    });
+  }
 
-  expandAllBtn.addEventListener("click", () => {
-    document.querySelectorAll(".level-group").forEach(el => el.classList.remove("collapsed"));
-  });
+  // 9. 전체 접기 / 펼치기
+  if (expandAllBtn) {
+    expandAllBtn.addEventListener("click", () => {
+      document.querySelectorAll(".level-group").forEach(el => el.classList.remove("collapsed"));
+    });
+  }
 
-  collapseAllBtn.addEventListener("click", () => {
-    document.querySelectorAll(".level-group").forEach(el => el.classList.add("collapsed"));
-  });
+  if (collapseAllBtn) {
+    collapseAllBtn.addEventListener("click", () => {
+      document.querySelectorAll(".level-group").forEach(el => el.classList.add("collapsed"));
+    });
+  }
 
-  tabPhrasalBtn.addEventListener("click", () => {
-    tabPhrasalBtn.classList.add("active");
-    tabPronBtn.classList.remove("active");
-    phrasalBox.classList.remove("hidden");
-    pronBox.classList.add("hidden");
-  });
+  // 10. 개인 구동사 / 발음 노트 탭 전환 및 자동 저장
+  if (tabPhrasalBtn && tabPronBtn) {
+    tabPhrasalBtn.addEventListener("click", () => {
+      tabPhrasalBtn.classList.add("active");
+      tabPronBtn.classList.remove("active");
+      if (phrasalBox) phrasalBox.classList.remove("hidden");
+      if (pronBox) pronBox.classList.add("hidden");
+    });
 
-  tabPronBtn.addEventListener("click", () => {
-    tabPronBtn.classList.add("active");
-    tabPhrasalBtn.classList.remove("active");
-    pronBox.classList.remove("hidden");
-    phrasalBox.classList.add("hidden");
-  });
+    tabPronBtn.addEventListener("click", () => {
+      tabPronBtn.classList.add("active");
+      tabPhrasalBtn.classList.remove("active");
+      if (pronBox) pronBox.classList.remove("hidden");
+      if (phrasalBox) phrasalBox.classList.add("hidden");
+    });
+  }
 
-  phrasalInput.value = localStorage.getItem(KEY_PHRASAL) || "";
-  pronInput.value = localStorage.getItem(KEY_PRON) || "";
+  if (phrasalInput) phrasalInput.value = localStorage.getItem(KEY_PHRASAL_NOTES) || "";
+  if (pronInput) pronInput.value = localStorage.getItem(KEY_PRON_NOTES) || "";
 
-  phrasalInput.addEventListener("input", () => {
-    localStorage.setItem(KEY_PHRASAL, phrasalInput.value);
-    noteStatus.textContent = "구동사 노트 저장됨";
-    setTimeout(() => { noteStatus.textContent = "자동 저장됨"; }, 1500);
-  });
+  if (phrasalInput) {
+    phrasalInput.addEventListener("input", () => {
+      localStorage.setItem(KEY_PHRASAL_NOTES, phrasalInput.value);
+      if (noteStatus) {
+        noteStatus.textContent = "구동사 노트 저장됨";
+        setTimeout(() => { noteStatus.textContent = "자동 저장됨"; }, 1500);
+      }
+    });
+  }
 
-  pronInput.addEventListener("input", () => {
-    localStorage.setItem(KEY_PRON, pronInput.value);
-    noteStatus.textContent = "발음 노트 저장됨";
-    setTimeout(() => { noteStatus.textContent = "자동 저장됨"; }, 1500);
-  });
+  if (pronInput) {
+    pronInput.addEventListener("input", () => {
+      localStorage.setItem(KEY_PRON_NOTES, pronInput.value);
+      if (noteStatus) {
+        noteStatus.textContent = "발음 노트 저장됨";
+        setTimeout(() => { noteStatus.textContent = "자동 저장됨"; }, 1500);
+      }
+    });
+  }
 
+  // 11. Service Worker 등록 및 PWA 설치 프롬프트
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js")
-      .then(() => console.log("[SW] Registered"))
-      .catch(err => console.error("[SW] Failed:", err));
+      .then(() => console.log("[SW] Service Worker 등록 완료"))
+      .catch(err => console.error("[SW] Service Worker 등록 실패:", err));
   }
 
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    pwaInstallBtn.classList.remove("hidden");
+    if (pwaInstallBtn) pwaInstallBtn.classList.remove("hidden");
   });
 
-  pwaInstallBtn.addEventListener("click", () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choice) => {
-        if (choice.outcome === "accepted") {
-          pwaInstallBtn.classList.add("hidden");
-        }
-        deferredPrompt = null;
-      });
-    }
-  });
+  if (pwaInstallBtn) {
+    pwaInstallBtn.addEventListener("click", () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === "accepted") {
+            pwaInstallBtn.classList.add("hidden");
+          }
+          deferredPrompt = null;
+        });
+      }
+    });
+  }
 
+  // 앱 초기화 실행
   renderCurriculum();
   updateProgress();
 });
