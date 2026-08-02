@@ -31,11 +31,14 @@
 
   <main class="main-container">
 
-    <!-- 대시보드 및 진행률 -->
+    <!-- 대시보드 & 진행률 & 연속 공부 일수 -->
     <section class="card progress-card">
       <div class="progress-header">
         <h2>📊 전체 학습 진행률</h2>
-        <span id="progress-percent" class="percent-badge">0%</span>
+        <div class="header-badges">
+          <span id="streak-badge" class="streak-badge">🔥 0일 연속</span>
+          <span id="progress-percent" class="percent-badge">0%</span>
+        </div>
       </div>
       
       <div class="progress-track">
@@ -58,16 +61,16 @@
       </div>
     </section>
 
-    <!-- 오늘의 추천 학습 -->
+    <!-- 오늘의 추천 학습 (자동 Day 표시) -->
     <section class="card today-card">
       <div class="card-header">
         <span class="card-icon">🔥</span>
-        <h3>오늘의 추천 학습</h3>
+        <h3 id="today-day-title">오늘의 추천 학습</h3>
       </div>
       <div id="today-lesson-container" class="today-content"></div>
     </section>
 
-    <!-- 개인 공부용 노트 섹션 (구동사 / 발음 노트) -->
+    <!-- 개인 노트 섹션 (구동사 / 발음) -->
     <section class="card notes-section">
       <div class="note-tabs">
         <button id="tab-phrasal-btn" class="tab-btn active">📖 구동사 노트</button>
@@ -86,7 +89,7 @@
       </div>
     </section>
 
-    <!-- 검색 및 아코디언 조작 -->
+    <!-- 검색 및 조작 -->
     <section class="controls-section">
       <div class="search-box">
         <span class="search-icon">🔍</span>
@@ -100,7 +103,7 @@
       </div>
     </section>
 
-    <!-- Day별 플래너 영역 -->
+    <!-- Day별 커리큘럼 리스트 -->
     <section id="curriculum-container" class="curriculum-container"></section>
 
   </main>
