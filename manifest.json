@@ -1,7 +1,7 @@
 {
-  "name": "하이빅쌤 영어 완강 플래너",
-  "short_name": "영어완강",
-  "description": "하이빅쌤 영어 커리큘럼 개인 완강 플래너 PWA",
+  "name": "하이빅쌤 30일 완강 개인 플래너",
+  "short_name": "30일완강",
+  "description": "하이빅쌤 영어 커리큘럼 30일 완강 개인 PWA 플래너",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
