@@ -14,11 +14,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "OT를 듣고 느낀 완강 다짐이나 소리 원리를 적어보세요 ✍️",
     lessons: [
-      { id: "OT-01", title: "OT - 왕초보_초보 스피킹을 위한 아웃풋 학습법은?", duration: "9분 32초" },
-      { id: "OT-02", title: "OT - 이렇게 공부합니다", duration: "3분 1초" },
-      { id: "WU-01", title: "WARM-UP - 한국어와 달라도 너무 다른 영어 소리 정복", duration: "12분 45초" },
-      { id: "WU-02", title: "WARM-UP - 한국어에 없는 모음소리조각 1", duration: "29분 5초" },
-      { id: "WU-03", title: "WARM-UP - 한국어에 없는 모음소리조각 2", duration: "19분 38초" }
+      { id: "OT-01", title: "OT - 왕초보_초보 스피킹을 위한 아웃풋 학습법은?", duration: "9m 32s" },
+      { id: "OT-02", title: "OT - 이렇게 공부합니다", duration: "3m 1s" },
+      { id: "WU-01", title: "WARM-UP - 한국어와 달라도 너무 다른 영어 소리 정복", duration: "12m 45s" },
+      { id: "WU-02", title: "WARM-UP - 한국어에 없는 모음소리조각 1", duration: "29m 5s" },
+      { id: "WU-03", title: "WARM-UP - 한국어에 없는 모음소리조각 2", duration: "19m 38s" }
     ]
   },
   {
@@ -36,9 +36,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 가장 헷갈렸던 자음 소리와 혀 위치를 기록해보세요 ✍️",
     lessons: [
-      { id: "D1-1", title: "WARM-UP - 한국어에 없는 자음소리조각 1", duration: "29분 17초" },
-      { id: "D1-2", title: "WARM-UP - 한국어에 없는 자음소리조각 2", duration: "22분 10초" },
-      { id: "D1-3", title: "WARM-UP - 한국어에는 없는 영어 자음 소리조각 R&L", duration: "25분 10초" }
+      { id: "WU-04", title: "WARM-UP - 한국어에 없는 자음소리조각 1", duration: "29m 17s" },
+      { id: "WU-05", title: "WARM-UP - 한국어에 없는 자음소리조각 2", duration: "22m 10s" },
+      { id: "WU-06", title: "WARM-UP - 한국어에는 없는 영어 자음 소리조각 R&L", duration: "25m 10s" }
     ]
   },
   {
@@ -56,11 +56,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 딕테이션하면서 안 들렸던 소리 패턴을 기록해보세요 ✍️",
     lessons: [
-      { id: "D2-1", title: "L1S1 - [인풋] Step1. 흘려듣기 딕테이션", duration: "8분 25초" },
-      { id: "D2-2", title: "L1S1 - [인풋] Step2. 핀셋 리딩법", duration: "15분 3초" },
-      { id: "D2-3", title: "L1S1 - [인풋] Step3. 핀셋 구동사", duration: "16분 56초" },
-      { id: "D2-4", title: "L1S1 - [인풋] Step4. 핀셋 뉘앙스", duration: "8분 48초" },
-      { id: "D2-5", title: "L1S1 - [인풋] Step5. 소리영어 연음연습", duration: "23분 44초" }
+      { id: "L1S1-I1", title: "[Level 1. Story #1] [인풋] Step1. 흘려듣기 딕테이션", duration: "8m 25s" },
+      { id: "L1S1-I2", title: "[Level 1. Story #1] [인풋] Step2. 핀셋 리딩법", duration: "15m 3s" },
+      { id: "L1S1-I3", title: "[Level 1. Story #1] [인풋] Step3. 핀셋 구동사", duration: "16m 56s" },
+      { id: "L1S1-I4", title: "[Level 1. Story #1] [인풋] Step4. 핀셋 뉘앙스", duration: "8m 48s" },
+      { id: "L1S1-I5", title: "[Level 1. Story #1] [인풋] Step5. 소리영어 연음연습", duration: "23m 44s" }
     ]
   },
   {
@@ -78,9 +78,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "입에 잘 붙지 않아서 여러 번 연습한 문장을 적어보세요 ✍️",
     lessons: [
-      { id: "D3-1", title: "L1S1 - [아웃풋] Step1. 디테일 스피킹", duration: "19분 43초" },
-      { id: "D3-2", title: "L1S1 - [아웃풋] Step2. 스트레칭 스피킹", duration: "22분 43초" },
-      { id: "D3-3", title: "L1S1 - [아웃풋] Step3. 스피드 스피킹", duration: "16분 10초" }
+      { id: "L1S1-O1", title: "[Level 1. Story #1] [아웃풋] Step1. 디테일 스피킹", duration: "19m 43s" },
+      { id: "L1S1-O2", title: "[Level 1. Story #1] [아웃풋] Step2. 스트레칭 스피킹", duration: "22m 43s" },
+      { id: "L1S1-O3", title: "[Level 1. Story #1] [아웃풋] Step3. 스피드 스피킹", duration: "16m 10s" }
     ]
   },
   {
@@ -98,11 +98,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "새롭게 알게 된 뉘앙스 차이나 표현을 기록해보세요 ✍️",
     lessons: [
-      { id: "D4-1", title: "L1S2 - [인풋] Step1. 흘려듣기 딕테이션", duration: "10분 56초" },
-      { id: "D4-2", title: "L1S2 - [인풋] Step2. 핀셋 리딩법", duration: "19분 25초" },
-      { id: "D4-3", title: "L1S2 - [인풋] Step3. 핀셋 구동사", duration: "19분 50초" },
-      { id: "D4-4", title: "L1S2 - [인풋] Step4. 핀셋 뉘앙스", duration: "9분 52초" },
-      { id: "D4-5", title: "L1S2 - [인풋] Step5. 소리영어 연음연습", duration: "24분 58초" }
+      { id: "L1S2-I1", title: "[Level 1. Story #2] [인풋] Step1. 흘려듣기 딕테이션", duration: "10m 56s" },
+      { id: "L1S2-I2", title: "[Level 1. Story #2] [인풋] Step2. 핀셋 리딩법", duration: "19m 25s" },
+      { id: "L1S2-I3", title: "[Level 1. Story #2] [인풋] Step3. 핀셋 구동사", duration: "19m 50s" },
+      { id: "L1S2-I4", title: "[Level 1. Story #2] [인풋] Step4. 핀셋 뉘앙스", duration: "9m 52s" },
+      { id: "L1S2-I5", title: "[Level 1. Story #2] [인풋] Step5. 소리영어 연음연습", duration: "24m 58s" }
     ]
   },
   {
@@ -120,9 +120,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 스피킹을 연습하며 느껴진 변화나 다짐을 적어보세요 ✍️",
     lessons: [
-      { id: "D5-1", title: "L1S2 - [아웃풋] Step1. 디테일 스피킹", duration: "24분 53초" },
-      { id: "D5-2", title: "L1S2 - [아웃풋] Step2. 스트레칭 스피킹", duration: "24분 58초" },
-      { id: "D5-3", title: "L1S2 - [아웃풋] Step3. 스피드 스피킹", duration: "16분 49초" }
+      { id: "L1S2-O1", title: "[Level 1. Story #2] [아웃풋] Step1. 디테일 스피킹", duration: "24m 53s" },
+      { id: "L1S2-O2", title: "[Level 1. Story #2] [아웃풋] Step2. 스트레칭 스피킹", duration: "24m 58s" },
+      { id: "L1S2-O3", title: "[Level 1. Story #2] [아웃풋] Step3. 스피드 스피킹", duration: "16m 49s" }
     ]
   },
   {
@@ -140,11 +140,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 인풋 학습 중 인상 깊었던 예문을 기록해보세요 ✍️",
     lessons: [
-      { id: "D6-1", title: "L1S3 - [인풋] Step1. 흘려듣기 딕테이션", duration: "11분 22초" },
-      { id: "D6-2", title: "L1S3 - [인풋] Step2. 핀셋 리딩법", duration: "27분 31초" },
-      { id: "D6-3", title: "L1S3 - [인풋] Step3. 핀셋 구동사", duration: "13분 34초" },
-      { id: "D6-4", title: "L1S3 - [인풋] Step4. 핀셋 뉘앙스", duration: "10분 42초" },
-      { id: "D6-5", title: "L1S3 - [인풋] Step5. 소리영어 연음연습", duration: "26분 53초" }
+      { id: "L1S3-I1", title: "[Level 1. Story #3] [인풋] Step1. 흘려듣기 딕테이션", duration: "11m 22s" },
+      { id: "L1S3-I2", title: "[Level 1. Story #3] [인풋] Step2. 핀셋 리딩법", duration: "27m 31s" },
+      { id: "L1S3-I3", title: "[Level 1. Story #3] [인풋] Step3. 핀셋 구동사", duration: "13m 34s" },
+      { id: "L1S3-I4", title: "[Level 1. Story #3] [인풋] Step4. 핀셋 뉘앙스", duration: "10m 42s" },
+      { id: "L1S3-I5", title: "[Level 1. Story #3] [인풋] Step5. 소리영어 연음연습", duration: "26m 53s" }
     ]
   },
   {
@@ -162,10 +162,10 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "Level 1을 마치며 내가 쓴 일기 문장이나 소감을 적어보세요 ✍️",
     lessons: [
-      { id: "D7-1", title: "L1S3 - [아웃풋] Step1. 디테일 스피킹", duration: "12분 28초" },
-      { id: "D7-2", title: "L1S3 - [아웃풋] Step2. 스트레칭 스피킹", duration: "19분 47초" },
-      { id: "D7-3", title: "L1S3 - [아웃풋] Step3. 스피드 스피킹", duration: "10분 8초" },
-      { id: "D7-4", title: "[2025] Level 1 일기 쓰기 훈련", duration: "16분 13초" }
+      { id: "L1S3-O1", title: "[Level 1. Story #3] [아웃풋] Step1. 디테일 스피킹", duration: "12m 28s" },
+      { id: "L1S3-O2", title: "[Level 1. Story #3] [아웃풋] Step2. 스트레칭 스피킹", duration: "19m 47s" },
+      { id: "L1S3-O3", title: "[Level 1. Story #3] [아웃풋] Step3. 스피드 스피킹", duration: "10m 8s" },
+      { id: "L1-DIARY", title: "[2025] Level 1 일기 쓰기 훈련", duration: "16m 13s" }
     ]
   },
   {
@@ -183,11 +183,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "Level 2로 올라오면서 새롭게 배운 구동사나 표현을 적어보세요 ✍️",
     lessons: [
-      { id: "D8-1", title: "L2S1 - [인풋] Step1. 흘려듣기 딕테이션", duration: "9분 43초" },
-      { id: "D8-2", title: "L2S1 - [인풋] Step2. 핀셋 리딩법", duration: "22분 15초" },
-      { id: "D8-3", title: "L2S1 - [인풋] Step3. 핀셋 구동사", duration: "13분 47초" },
-      { id: "D8-4", title: "L2S1 - [인풋] Step4. 핀셋 뉘앙스", duration: "12분 42초" },
-      { id: "D8-5", title: "L2S1 - [인풋] Step5. 소리영어 연음연습", duration: "21분 7초" }
+      { id: "L2S1-I1", title: "[Level 2. Story #1] [인풋] Step1. 흘려듣기 딕테이션", duration: "9m 43s" },
+      { id: "L2S1-I2", title: "[Level 2. Story #1] [인풋] Step2. 핀셋 리딩법", duration: "22m 15s" },
+      { id: "L2S1-I3", title: "[Level 2. Story #1] [인풋] Step3. 핀셋 구동사", duration: "13m 47s" },
+      { id: "L2S1-I4", title: "[Level 2. Story #1] [인풋] Step4. 핀셋 뉘앙스", duration: "12m 42s" },
+      { id: "L2S1-I5", title: "[Level 2. Story #1] [인풋] Step5. 소리영어 연음연습", duration: "21m 7s" }
     ]
   },
   {
@@ -205,9 +205,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 스피킹 훈련에서 유독 매끄럽게 연결된 표현을 적어보세요 ✍️",
     lessons: [
-      { id: "D9-1", title: "L2S1 - [아웃풋] Step1. 디테일 스피킹", duration: "15분 50초" },
-      { id: "D9-2", title: "L2S1 - [아웃풋] Step2. 스트레칭 스피킹", duration: "18분 41초" },
-      { id: "D9-3", title: "L2S1 - [아웃풋] Step3. 스피드 스피킹", duration: "9분 27초" }
+      { id: "L2S1-O1", title: "[Level 2. Story #1] [아웃풋] Step1. 디테일 스피킹", duration: "15m 50s" },
+      { id: "L2S1-O2", title: "[Level 2. Story #1] [아웃풋] Step2. 스트레칭 스피킹", duration: "18m 41s" },
+      { id: "L2S1-O3", title: "[Level 2. Story #1] [아웃풋] Step3. 스피드 스피킹", duration: "9m 27s" }
     ]
   },
   {
@@ -225,11 +225,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 문장 끊어읽기(청크) 훈련에서 배운 단서를 기록해보세요 ✍️",
     lessons: [
-      { id: "D10-1", title: "L2S2 - [인풋] Step1. 흘려듣기 딕테이션", duration: "10분 15초" },
-      { id: "D10-2", title: "L2S2 - [인풋] Step2. 핀셋 리딩법", duration: "26분 42초" },
-      { id: "D10-3", title: "L2S2 - [인풋] Step3. 핀셋 구동사", duration: "13분 50초" },
-      { id: "D10-4", title: "L2S2 - [인풋] Step4. 핀셋 뉘앙스", duration: "13분 3초" },
-      { id: "D10-5", title: "L2S2 - [인풋] Step5. 소리영어 연음연습", duration: "23분 23초" }
+      { id: "L2S2-I1", title: "[Level 2. Story #2] [인풋] Step1. 흘려듣기 딕테이션", duration: "10m 15s" },
+      { id: "L2S2-I2", title: "[Level 2. Story #2] [인풋] Step2. 핀셋 리딩법", duration: "26m 42s" },
+      { id: "L2S2-I3", title: "[Level 2. Story #2] [인풋] Step3. 핀셋 구동사", duration: "13m 50s" },
+      { id: "L2S2-I4", title: "[Level 2. Story #2] [인풋] Step4. 핀셋 뉘앙스", duration: "13m 3s" },
+      { id: "L2S2-I5", title: "[Level 2. Story #2] [인풋] Step5. 소리영어 연음연습", duration: "23m 23s" }
     ]
   },
   {
@@ -247,9 +247,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 연습한 스피드 스피킹 최고 기록이나 느낀 점을 적어보세요 ✍️",
     lessons: [
-      { id: "D11-1", title: "L2S2 - [아웃풋] Step1. 디테일 스피킹", duration: "15분 56초" },
-      { id: "D11-2", title: "L2S2 - [아웃풋] Step2. 스트레칭 스피킹", duration: "17분 21초" },
-      { id: "D11-3", title: "L2S2 - [아웃풋] Step3. 스피드 스피킹", duration: "13분 57초" }
+      { id: "L2S2-O1", title: "[Level 2. Story #2] [아웃풋] Step1. 디테일 스피킹", duration: "15m 56s" },
+      { id: "L2S2-O2", title: "[Level 2. Story #2] [아웃풋] Step2. 스트레칭 스피킹", duration: "17m 21s" },
+      { id: "L2S2-O3", title: "[Level 2. Story #2] [아웃풋] Step3. 스피드 스피킹", duration: "13m 57s" }
     ]
   },
   {
@@ -267,11 +267,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "잘 안 들렸다가 연음 법칙을 알고 들리게 된 단어를 적어보세요 ✍️",
     lessons: [
-      { id: "D12-1", title: "L2S3 - [인풋] Step1. 흘려듣기 딕테이션", duration: "9분 29초" },
-      { id: "D12-2", title: "L2S3 - [인풋] Step2. 핀셋 리딩법", duration: "14분 41초" },
-      { id: "D12-3", title: "L2S3 - [인풋] Step3. 핀셋 구동사", duration: "15분 41초" },
-      { id: "D12-4", title: "L2S3 - [인풋] Step4. 핀셋 뉘앙스", duration: "11분 51초" },
-      { id: "D12-5", title: "L2S3 - [인풋] Step5. 소리영어 연음연습", duration: "20분 59초" }
+      { id: "L2S3-I1", title: "[Level 2. Story #3] [인풋] Step1. 흘려듣기 딕테이션", duration: "9m 29s" },
+      { id: "L2S3-I2", title: "[Level 2. Story #3] [인풋] Step2. 핀셋 리딩법", duration: "14m 41s" },
+      { id: "L2S3-I3", title: "[Level 2. Story #3] [인풋] Step3. 핀셋 구동사", duration: "15m 41s" },
+      { id: "L2S3-I4", title: "[Level 2. Story #3] [인풋] Step4. 핀셋 뉘앙스", duration: "11m 51s" },
+      { id: "L2S3-I5", title: "[Level 2. Story #3] [인풋] Step5. 소리영어 연음연습", duration: "20m 59s" }
     ]
   },
   {
@@ -289,10 +289,10 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "Level 2를 마무리하는 소감이나 직접 쓴 일기를 기록해보세요 ✍️",
     lessons: [
-      { id: "D13-1", title: "L2S3 - [아웃풋] Step1. 디테일 스피킹", duration: "14분 42초" },
-      { id: "D13-2", title: "L2S3 - [아웃풋] Step2. 스트레칭 스피킹", duration: "16분 16초" },
-      { id: "D13-3", title: "L2S3 - [아웃풋] Step3. 스피드 스피킹", duration: "15분 56초" },
-      { id: "D13-4", title: "[2025] Level 2 일기 쓰기 훈련", duration: "16분 31초" }
+      { id: "L2S3-O1", title: "[Level 2. Story #3] [아웃풋] Step1. 디테일 스피킹", duration: "14m 42s" },
+      { id: "L2S3-O2", title: "[Level 2. Story #3] [아웃풋] Step2. 스트레칭 스피킹", duration: "16m 16s" },
+      { id: "L2S3-O3", title: "[Level 2. Story #3] [아웃풋] Step3. 스피드 스피킹", duration: "15m 56s" },
+      { id: "L2-DIARY", title: "[2025] Level 2 일기 쓰기 훈련", duration: "16m 31s" }
     ]
   },
   {
@@ -310,11 +310,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "Level 3 진입 후 느껴진 문장 길이의 변화나 표현을 정리해보세요 ✍️",
     lessons: [
-      { id: "D14-1", title: "L3S1 - [인풋] Step1. 흘려듣기 딕테이션", duration: "9분 36초" },
-      { id: "D14-2", title: "L3S1 - [인풋] Step2. 핀셋 리딩법", duration: "18분 24초" },
-      { id: "D14-3", title: "L3S1 - [인풋] Step3. 핀셋 구동사", duration: "17분 26초" },
-      { id: "D14-4", title: "L3S1 - [인풋] Step4. 핀셋 뉘앙스", duration: "7분 23초" },
-      { id: "D14-5", title: "L3S1 - [인풋] Step5. 소리영어 연음연습", duration: "19분 10초" }
+      { id: "L3S1-I1", title: "[Level 3. Story #1] [인풋] Step1. 흘려듣기 딕테이션", duration: "9m 36s" },
+      { id: "L3S1-I2", title: "[Level 3. Story #1] [인풋] Step2. 핀셋 리딩법", duration: "18m 24s" },
+      { id: "L3S1-I3", title: "[Level 3. Story #1] [인풋] Step3. 핀셋 구동사", duration: "17m 26s" },
+      { id: "L3S1-I4", title: "[Level 3. Story #1] [인풋] Step4. 핀셋 뉘앙스", duration: "7m 23s" },
+      { id: "L3S1-I5", title: "[Level 3. Story #1] [인풋] Step5. 소리영어 연음연습", duration: "19m 10s" }
     ]
   },
   {
@@ -332,9 +332,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 아웃풋 훈련 중 내 목소리로 완벽히 내뱉은 문장을 적어보세요 ✍️",
     lessons: [
-      { id: "D15-1", title: "L3S1 - [아웃풋] Step1. 디테일 스피킹", duration: "10분 48초" },
-      { id: "D15-2", title: "L3S1 - [아웃풋] Step2. 스트레칭 스피킹", duration: "18분 20초" },
-      { id: "D15-3", title: "L3S1 - [아웃풋] Step3. 스피드 스피킹", duration: "12분 25초" }
+      { id: "L3S1-O1", title: "[Level 3. Story #1] [아웃풋] Step1. 디테일 스피킹", duration: "10m 48s" },
+      { id: "L3S1-O2", title: "[Level 3. Story #1] [아웃풋] Step2. 스트레칭 스피킹", duration: "18m 20s" },
+      { id: "L3S1-O3", title: "[Level 3. Story #1] [아웃풋] Step3. 스피드 스피킹", duration: "12m 25s" }
     ]
   },
   {
@@ -352,11 +352,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 딕테이션하며 단어를 놓쳤던 이유나 원인을 분석해보세요 ✍️",
     lessons: [
-      { id: "D16-1", title: "L3S2 - [인풋] Step1. 흘려듣기 딕테이션", duration: "8분 51초" },
-      { id: "D16-2", title: "L3S2 - [인풋] Step2. 핀셋 리딩법", duration: "27분 17초" },
-      { id: "D16-3", title: "L3S2 - [인풋] Step3. 핀셋 구동사", duration: "12분 46초" },
-      { id: "D16-4", title: "L3S2 - [인풋] Step4. 핀셋 뉘앙스", duration: "9분 41초" },
-      { id: "D16-5", title: "L3S2 - [인풋] Step5. 소리영어 연음연습", duration: "19분 15초" }
+      { id: "L3S2-I1", title: "[Level 3. Story #2] [인풋] Step1. 흘려듣기 딕테이션", duration: "8m 51s" },
+      { id: "L3S2-I2", title: "[Level 3. Story #2] [인풋] Step2. 핀셋 리딩법", duration: "27m 17s" },
+      { id: "L3S2-I3", title: "[Level 3. Story #2] [인풋] Step3. 핀셋 구동사", duration: "12m 46s" },
+      { id: "L3S2-I4", title: "[Level 3. Story #2] [인풋] Step4. 핀셋 뉘앙스", duration: "9m 41s" },
+      { id: "L3S2-I5", title: "[Level 3. Story #2] [인풋] Step5. 소리영어 연음연습", duration: "19m 15s" }
     ]
   },
   {
@@ -374,9 +374,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 말하기 연습 후 느껴진 뿌듯함이나 기록을 적어보세요 ✍️",
     lessons: [
-      { id: "D17-1", title: "L3S2 - [아웃풋] Step1. 디테일 스피킹", duration: "13분 54초" },
-      { id: "D17-2", title: "L3S2 - [아웃풋] Step2. 스트레칭 스피킹", duration: "15분 46초" },
-      { id: "D17-3", title: "L3S2 - [아웃풋] Step3. 스피드 스피킹", duration: "12분 18초" }
+      { id: "L3S2-O1", title: "[Level 3. Story #2] [아웃풋] Step1. 디테일 스피킹", duration: "13m 54s" },
+      { id: "L3S2-O2", title: "[Level 3. Story #2] [아웃풋] Step2. 스트레칭 스피킹", duration: "15m 46s" },
+      { id: "L3S2-O3", title: "[Level 3. Story #2] [아웃풋] Step3. 스피드 스피킹", duration: "12m 18s" }
     ]
   },
   {
@@ -394,11 +394,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "오늘 배운 표현 중 실생활에서 쓰고 싶은 영어 문장을 기록해 보세요 ✍️",
     lessons: [
-      { id: "D18-1", title: "L3S3 - [인풋] Step1. 흘려듣기 딕테이션", duration: "10분 29초" },
-      { id: "D18-2", title: "L3S3 - [인풋] Step2. 핀셋 리딩법", duration: "14분 30초" },
-      { id: "D18-3", title: "L3S3 - [인풋] Step3. 핀셋 구동사", duration: "13분 33초" },
-      { id: "D18-4", title: "L3S3 - [인풋] Step4. 핀셋 뉘앙스", duration: "12분 57초" },
-      { id: "D18-5", title: "L3S3 - [인풋] Step5. 소리영어 연음연습", duration: "22분 6초" }
+      { id: "L3S3-I1", title: "[Level 3. Story #3] [인풋] Step1. 흘려듣기 딕테이션", duration: "10m 29s" },
+      { id: "L3S3-I2", title: "[Level 3. Story #3] [인풋] Step2. 핀셋 리딩법", duration: "14m 30s" },
+      { id: "L3S3-I3", title: "[Level 3. Story #3] [인풋] Step3. 핀셋 구동사", duration: "13m 33s" },
+      { id: "L3S3-I4", title: "[Level 3. Story #3] [인풋] Step4. 핀셋 뉘앙스", duration: "12m 57s" },
+      { id: "L3S3-I5", title: "[Level 3. Story #3] [인풋] Step5. 소리영어 연음연습", duration: "22m 6s" }
     ]
   },
   {
@@ -416,10 +416,10 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "Level 3를 마치며 내 영어 실력에 생긴 긍정적인 변화를 적어보세요 ✍️",
     lessons: [
-      { id: "D19-1", title: "L3S3 - [아웃풋] Step1. 디테일 스피킹", duration: "25분 1초" },
-      { id: "D19-2", title: "L3S3 - [아웃풋] Step2. 스트레칭 스피킹", duration: "17분 18초" },
-      { id: "D19-3", title: "L3S3 - [아웃풋] Step3. 스피드 스피킹", duration: "14분 16초" },
-      { id: "D19-4", title: "[2025] Level 3 일기 쓰기 훈련", duration: "12분 15초" }
+      { id: "L3S3-O1", title: "[Level 3. Story #3] [아웃풋] Step1. 디테일 스피킹", duration: "25m 1s" },
+      { id: "L3S3-O2", title: "[Level 3. Story #3] [아웃풋] Step2. 스트레칭 스피킹", duration: "17m 18s" },
+      { id: "L3S3-O3", title: "[Level 3. Story #3] [아웃풋] Step3. 스피드 스피킹", duration: "14m 16s" },
+      { id: "L3-DIARY", title: "[2025] Level 3 일기 쓰기 훈련", duration: "12m 15s" }
     ]
   },
   {
@@ -437,11 +437,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "Level 4 고급 문장에서 가장 멋졌던 구문이나 단어를 적어보세요 ✍️",
     lessons: [
-      { id: "D20-1", title: "L4 - [인풋] Step1. 흘려듣기 딕테이션", duration: "7분 1초" },
-      { id: "D20-2", title: "L4 - [인풋] Step2. 핀셋 리딩법", duration: "11분 25초" },
-      { id: "D20-3", title: "L4 - [인풋] Step3. 핀셋 구동사", duration: "11분 54초" },
-      { id: "D20-4", title: "L4 - [인풋] Step4. 핀셋 뉘앙스", duration: "17분 26초" },
-      { id: "D20-5", title: "L4 - [인풋] Step5. 소리영어 연음연습", duration: "12분 22초" }
+      { id: "L4-I1", title: "[Level 4] [인풋] Step1. 흘려듣기 딕테이션", duration: "7m 1s" },
+      { id: "L4-I2", title: "[Level 4] [인풋] Step2. 핀셋 리딩법", duration: "11m 25s" },
+      { id: "L4-I3", title: "[Level 4] [인풋] Step3. 핀셋 구동사", duration: "11m 54s" },
+      { id: "L4-I4", title: "[Level 4] [인풋] Step4. 핀셋 뉘앙스", duration: "17m 26s" },
+      { id: "L4-I5", title: "[Level 4] [인풋] Step5. 소리영어 연음연습", duration: "12m 22s" }
     ]
   },
   {
@@ -459,9 +459,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "원어민 속도를 따라가며 느꼈던 스피킹 쾌감을 소감으로 적어보세요 ✍️",
     lessons: [
-      { id: "D21-1", title: "L4 - [아웃풋] Step1. 디테일 스피킹", duration: "17분 14초" },
-      { id: "D21-2", title: "L4 - [아웃풋] Step2. 스트레칭 스피킹", duration: "19분 2초" },
-      { id: "D21-3", title: "L4 - [아웃풋] Step3. 스피드 스피킹", duration: "8분 29초" }
+      { id: "L4-O1", title: "[Level 4] [아웃풋] Step1. 디테일 스피킹", duration: "17m 14s" },
+      { id: "L4-O2", title: "[Level 4] [아웃풋] Step2. 스트레칭 스피킹", duration: "19m 2s" },
+      { id: "L4-O3", title: "[Level 4] [아웃풋] Step3. 스피드 스피킹", duration: "8m 29s" }
     ]
   },
   {
@@ -479,9 +479,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "낭독하며 감정을 실어 말할 때 잘 살려진 표현을 기록해보세요 ✍️",
     lessons: [
-      { id: "D22-1", title: "빅쌤 낭독챌린지 맛보기1-1", duration: "13분 39초" },
-      { id: "D22-2", title: "빅쌤 낭독챌린지 맛보기1-2", duration: "11분 5초" },
-      { id: "D22-3", title: "빅쌤 낭독챌린지 맛보기2-1", duration: "16분 17초" }
+      { id: "NC-1-1", title: "빅쌤 낭독챌린지 맛보기1-1", duration: "13m 39s" },
+      { id: "NC-1-2", title: "빅쌤 낭독챌린지 맛보기1-2", duration: "11m 5s" },
+      { id: "NC-2-1", title: "빅쌤 낭독챌린지 맛보기2-1", duration: "16m 17s" }
     ]
   },
   {
@@ -499,9 +499,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "스스로 녹음한 내 목소리를 들으며 느낀 점이나 개선점을 적어보세요 ✍️",
     lessons: [
-      { id: "D23-1", title: "빅쌤 낭독챌린지 맛보기2-2", duration: "11분 59초" },
-      { id: "D23-2", title: "빅쌤 낭독챌린지 맛보기3-1", duration: "12분 42초" },
-      { id: "D23-3", title: "빅쌤 낭독챌린지 맛보기3-2", duration: "14분 46초" }
+      { id: "NC-2-2", title: "빅쌤 낭독챌린지 맛보기2-2", duration: "11m 59s" },
+      { id: "NC-3-1", title: "빅쌤 낭독챌린지 맛보기3-1", duration: "12m 42s" },
+      { id: "NC-3-2", title: "빅쌤 낭독챌린지 맛보기3-2", duration: "14m 46s" }
     ]
   },
   {
@@ -519,11 +519,11 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "미드 속 대사 중 진짜 원어민스러웠던 구동사나 표현을 적어보세요 ✍️",
     lessons: [
-      { id: "D24-1", title: "[미드로 8step] [인풋] Step1. 흘려듣기 딕테이션", duration: "11분 36초" },
-      { id: "D24-2", title: "[미드로 8step] [인풋] Step2. 핀셋 리딩법", duration: "12분" },
-      { id: "D24-3", title: "[미드로 8step] [인풋] Step3. 핀셋 구동사", duration: "12분 26초" },
-      { id: "D24-4", title: "[미드로 8step] [인풋] Step4. 핀셋 뉘앙스", duration: "9분 8초" },
-      { id: "D24-5", title: "[미드로 8step] [인풋] Step5. 소리영어 연음연습", duration: "15분 52초" }
+      { id: "MD-I1", title: "[미드로 8step] [인풋] Step1. 흘려듣기 딕테이션", duration: "11m 36s" },
+      { id: "MD-I2", title: "[미드로 8step] [인풋] Step2. 핀셋 리딩법", duration: "12m" },
+      { id: "MD-I3", title: "[미드로 8step] [인풋] Step3. 핀셋 구동사", duration: "12m 26s" },
+      { id: "MD-I4", title: "[미드로 8step] [인풋] Step4. 핀셋 뉘앙스", duration: "9m 8s" },
+      { id: "MD-I5", title: "[미드로 8step] [인풋] Step5. 소리영어 연음연습", duration: "15m 52s" }
     ]
   },
   {
@@ -541,9 +541,9 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "미드 연기를 하며 가장 몰입해서 말했던 장면을 적어보세요 ✍️",
     lessons: [
-      { id: "D25-1", title: "[미드로 8step] [아웃풋] Step1. 디테일 스피킹", duration: "6분 57초" },
-      { id: "D25-2", title: "[미드로 8step] [아웃풋] Step2. 스트레칭 스피킹", duration: "8분 25초" },
-      { id: "D25-3", title: "[미드로 8step] [아웃풋] Step3. 스피드 스피킹", duration: "7분 13초" }
+      { id: "MD-O1", title: "[미드로 8step] [아웃풋] Step1. 디테일 스피킹", duration: "6m 57s" },
+      { id: "MD-O2", title: "[미드로 8step] [아웃풋] Step2. 스트레칭 스피킹", duration: "8m 25s" },
+      { id: "MD-O3", title: "[미드로 8step] [아웃풋] Step3. 스피드 스피킹", duration: "7m 13s" }
     ]
   },
   {
@@ -561,10 +561,10 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "해외 여행 가며 진짜 쓰게 될 것 같은 쇼핑 표현 1개를 적어보세요 ✍️",
     lessons: [
-      { id: "D26-1", title: "[여행영어-쇼핑편] 1. 위치 문의", duration: "11분 38초" },
-      { id: "D26-2", title: "[여행영어-쇼핑편] 2. 다른 제품 요청", duration: "10분 34초" },
-      { id: "D26-3", title: "[여행영어-쇼핑편] 3. 재고 확인 요청", duration: "7분 56초" },
-      { id: "D26-4", title: "[여행영어-쇼핑편] 4. 할인 정보 요청", duration: "8분 56초" }
+      { id: "TR-01", title: "[아웃풋 여행영어-쇼핑편] 1. 위치 문의", duration: "11m 38s" },
+      { id: "TR-02", title: "[아웃풋 여행영어-쇼핑편] 2. 다른 제품 요청", duration: "10m 34s" },
+      { id: "TR-03", title: "[아웃풋 여행영어-쇼핑편] 3. 재고 확인 요청", duration: "7m 56s" },
+      { id: "TR-04", title: "[아웃풋 여행영어-쇼핑편] 4. 할인 정보 요청", duration: "8m 56s" }
     ]
   },
   {
@@ -582,8 +582,8 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "열심히 발음하지 않고 힘을 빼고 발음해야 하는 원리를 기록해보세요 ✍️",
     lessons: [
-      { id: "D27-1", title: "[축약 소리] 1. I'll be there. 어디에 힘을 주고 말해야 할까?", duration: "14분 27초" },
-      { id: "D27-2", title: "[축약 소리] 2. 열심히 발음하지 말자: be 동사 들릴락 말락 발음하기", duration: "12분 36초" }
+      { id: "RD-01", title: "[축약되는 소리 알아보기] 1. I'll be there. 어디에 힘을 주고 말해야 할까?", duration: "14m 27s" },
+      { id: "RD-02", title: "[축약되는 소리 알아보기] 2. 열심히 발음하지 말자: be 동사 들릴락 말락 발음하기", duration: "12m 36s" }
     ]
   },
   {
@@ -601,8 +601,8 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "How do you [하으ㄹ여]처럼 버터 흘러가듯 말해보는 연습 소감을 적어보세요 ✍️",
     lessons: [
-      { id: "D28-1", title: "[축약 소리] 3. How do you는 [하으ㄹ여]", duration: "11분 27초" },
-      { id: "D28-2", title: "[축약 소리] 4. have, has, had도 열심히 발음하지 않는 법", duration: "10분 47초" }
+      { id: "RD-03", title: "[축약되는 소리 알아보기] 3. How do you는 [하으ㄹ여]", duration: "11m 27s" },
+      { id: "RD-04", title: "[축약되는 소리 알아보기] 4. have, has, had도 열심히 발음하지 않는 법", duration: "10m 47s" }
     ]
   },
   {
@@ -619,7 +619,7 @@ const CURRICULUM_DATA = [
     ],
     memoPlaceholder: "30일 동안 포기하지 않고 달려온 나 자신에게 주는 칭찬과 소감을 적어보세요 🏆✍️",
     lessons: [
-      { id: "D29-1", title: "🏆 하이빅쌤 커리큘럼 최종 완강 성공!", duration: "자유 학습" }
+      { id: "D30-1", title: "🏆 하이빅쌤 커리큘럼 최종 완강 성공!", duration: "자유 학습" }
     ]
   }
 ];
