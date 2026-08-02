@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const KEY_PRON_NOTES = "hibig_pron_notes";
   const KEY_THEME = "hibig_theme";
   const KEY_STREAK_DATES = "hibig_streak_dates";
-  const KEY_RECORDINGS = "hibig_day_recordings"; // 발음 녹음 저장용
+  const KEY_RECORDINGS = "hibig_day_recordings";
 
   let completedIds = new Set(JSON.parse(localStorage.getItem(KEY_COMPLETED_LESSONS) || "[]"));
   let completedMissions = new Set(JSON.parse(localStorage.getItem(KEY_COMPLETED_MISSIONS) || "[]"));
@@ -17,10 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let streakDates = new Set(JSON.parse(localStorage.getItem(KEY_STREAK_DATES) || "[]"));
   let currentTheme = localStorage.getItem(KEY_THEME) || "light";
 
-  // 녹음 관련 상태
   let mediaRecorder = null;
   let audioChunks = [];
-  let currentRecordingDay = null;
 
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const themeIcon = document.getElementById("theme-icon");
@@ -48,7 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const pronInput = document.getElementById("pron-input");
   const noteStatus = document.getElementById("note-status");
 
-  // 테마 관리
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     if (themeIcon) themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
@@ -74,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 연속 공부 일수 계산
   function updateStreak() {
     if (!streakBadge) return;
     const today = new Date().toISOString().split("T")[0];
@@ -96,7 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
     streakBadge.textContent = `🔥 ${streak}일 연속`;
   }
 
-  // 날짜 계산 헬퍼 함수 (YYYY-MM-DD -> +N일 날짜 스트링)
+  function formatDateDisplay(isoDateStr) {
+    if (!isoDateStr) return "";
+    const [year, month, day] = isoDateStr.split("-");
+    return `${year}년 ${parseInt(month, 10)}월 ${parseInt(day, 10)}일`;
+  }
+
   function addDays(dateStr, days) {
     const d = new Date(dateStr);
     d.setDate(d.getDate() + days);
@@ -105,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${m}.${day}`;
   }
 
-  // 오늘이 복습일인지 확인 헬퍼
   function isSameDay(dateStr, addN) {
     const target = new Date(dateStr);
     target.setDate(target.getDate() + addN);
@@ -115,7 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
            target.getDate() === today.getDate();
   }
 
-  // Day별 카드 생성 및 복습일자 / 녹음 영역 출력
   function renderCurriculum(filterQuery = "") {
     if (!curriculumContainer) return;
     curriculumContainer.innerHTML = "";
@@ -140,20 +139,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const dayCompletedCount = dayData.lessons.filter(l => completedIds.has(l.id)).length;
       const isDayFullyDone = dayCompletedCount === dayData.lessons.length && dayData.lessons.length > 0;
-      
-      // 완료 시 오늘 날짜(YYYY-MM-DD) 저장
+
+      // 1. 해당 Day 강의가 모두 완료되면 자동으로 YYYY-MM-DD 저장
       if (isDayFullyDone && !completedDates[dayData.day]) {
         const isoToday = new Date().toISOString().split("T")[0];
         completedDates[dayData.day] = isoToday;
         localStorage.setItem(KEY_COMPLETED_DATES, JSON.stringify(completedDates));
       }
 
-      const completedDateVal = completedDates[dayData.day];
-      const dateBadgeHtml = completedDateVal
-        ? `<span class="date-badge">✓ 완료 (${completedDateVal.substring(5)})</span>` 
-        : '';
+      const completedDateVal = completedDates[dayData.day] || "";
 
-      // 미션 HTML
+      // 2. 날짜 표시 및 수정을 위한 HTML 구조
+      const dateDisplayHtml = completedDateVal
+        ? `<span class="study-date-text">📅 ${formatDateDisplay(completedDateVal)} 공부 완료</span>`
+        : `<span class="study-date-text uncompleted">📅 공부 미완료</span>`;
+
       let missionsHtml = '';
       if (dayData.mission && dayData.mission.length > 0) {
         missionsHtml = `
@@ -173,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       }
 
-      // +1일, +3일, +7일 자동 복습 날짜 계산 영역
       let reviewHtml = '';
       if (completedDateVal) {
         const d1 = addDays(completedDateVal, 1);
@@ -196,7 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       }
 
-      // 녹음 컨트롤 UI
       const savedAudioData = recordings[dayData.day] || "";
       const recordingUiHtml = `
         <div class="day-section-title" style="margin-top:6px;">🎙️ 내 발음 녹음 훈련</div>
@@ -212,9 +210,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="level-title-area">
             <h3>${dayData.day}: ${dayData.goal}</h3>
             <p>⏱️ 시간: ${dayData.studyTime}</p>
+            <div class="study-date-container">
+              ${dateDisplayHtml}
+              <input type="date" class="date-picker-input" data-day="${dayData.day}" value="${completedDateVal}" title="공부 완료 날짜 직접 수정">
+            </div>
           </div>
           <div class="level-meta">
-            ${dateBadgeHtml}
             <span class="badge">${dayCompletedCount}/${dayData.lessons.length}강</span>
             <span class="arrow-icon">▼</span>
           </div>
@@ -258,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
         lessonsList.appendChild(lessonEl);
       });
 
-      // 메모 복원
       const memoInput = dayCard.querySelector(".day-memo-input");
       if (dayMemos[dayData.day]) {
         memoInput.value = dayMemos[dayData.day];
@@ -268,7 +268,23 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(KEY_DAY_MEMOS, JSON.stringify(dayMemos));
       });
 
-      // 녹음 버튼 이벤트 핸들러
+      // 날짜 선택(Date Picker) 변경 시 즉시 반영 및 저장
+      const datePicker = dayCard.querySelector(".date-picker-input");
+      datePicker.addEventListener("change", (e) => {
+        const newDate = e.target.value;
+        if (newDate) {
+          completedDates[dayData.day] = newDate;
+        } else {
+          delete completedDates[dayData.day];
+        }
+        localStorage.setItem(KEY_COMPLETED_DATES, JSON.stringify(completedDates));
+        renderCurriculum(searchInput ? searchInput.value : "");
+        updateProgress();
+      });
+
+      // 날짜 선택기 클릭 시 아코디언 토글 방지
+      datePicker.addEventListener("click", (e) => e.stopPropagation());
+
       const recBtn = dayCard.querySelector(".record-toggle-btn");
       recBtn.addEventListener("click", () => toggleRecording(dayData.day, recBtn, dayCard));
 
@@ -289,13 +305,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // MediaRecorder 활용 발음 녹음 실행
   async function toggleRecording(day, btnEl, dayCard) {
     const statusText = dayCard.querySelector(`.rec-status-text[data-day="${day}"]`);
     const audioPlayer = dayCard.querySelector(`.audio-player[data-day="${day}"]`);
 
     if (mediaRecorder && mediaRecorder.state === "recording") {
-      // 녹음 중지
       mediaRecorder.stop();
       btnEl.textContent = "🔴 녹음 시작";
       btnEl.classList.remove("recording");
@@ -303,12 +317,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 마이크 권한 및 녹음 시작
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorder = new MediaRecorder(stream);
       audioChunks = [];
-      currentRecordingDay = day;
 
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) audioChunks.push(e.data);
@@ -328,7 +340,6 @@ document.addEventListener("DOMContentLoaded", () => {
           statusText.textContent = "녹음 완료 (자동 저장됨)";
         };
 
-        // 트랙 종료
         stream.getTracks().forEach(track => track.stop());
       };
 
@@ -343,7 +354,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 전체 진행률 및 '오늘의 복습 카드' 종합 업데이트
   function updateProgress() {
     const total = allLessons.length;
     const completed = completedIds.size;
@@ -359,11 +369,9 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStreak();
   }
 
-  // 오늘의 학습 + 오늘 복습해야 할 Day 카드 자동 바인딩
   function renderTodayLessonAndReview() {
     if (!todayContainer) return;
 
-    // 오늘 복습해야 할 Day 검색 (+1일, +3일, +7일)
     const reviewDaysDue = [];
     Object.keys(completedDates).forEach(dayName => {
       const cDate = completedDates[dayName];
@@ -403,7 +411,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 체크박스 핸들러
   if (curriculumContainer) {
     curriculumContainer.addEventListener("change", (e) => {
       if (e.target.classList.contains("lesson-check")) {
@@ -443,7 +450,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 검색
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       const val = e.target.value;
@@ -460,7 +466,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 전체 펼치기 / 접기
   if (expandAllBtn) {
     expandAllBtn.addEventListener("click", () => {
       document.querySelectorAll(".level-group").forEach(el => el.classList.remove("collapsed"));
@@ -473,7 +478,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 노트 탭
   if (tabPhrasalBtn && tabPronBtn) {
     tabPhrasalBtn.addEventListener("click", () => {
       tabPhrasalBtn.classList.add("active");
@@ -513,7 +517,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // SW 및 PWA
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   }
