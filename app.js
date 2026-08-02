@@ -1,24 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // LocalStorage 키 관리
   const KEY_COMPLETED = "hibig_completed_lessons";
   const KEY_MISSIONS = "hibig_completed_missions";
-  const KEY_REVIEWS = "hibig_day_reviews";
   const KEY_COMPLETED_DATES = "hibig_completed_dates";
   const KEY_MEMOS = "hibig_day_memos";
   const KEY_PHRASAL = "hibig_phrasal_notes";
   const KEY_PRON = "hibig_pron_notes";
   const KEY_THEME = "hibig_theme";
+  const KEY_STREAK_DATES = "hibig_streak_dates";
 
-  // 데이터 상태
   let completedIds = new Set(JSON.parse(localStorage.getItem(KEY_COMPLETED) || "[]"));
   let completedMissions = new Set(JSON.parse(localStorage.getItem(KEY_MISSIONS) || "[]"));
-  let dayReviews = JSON.parse(localStorage.getItem(KEY_REVIEWS) || "{}");
   let completedDates = JSON.parse(localStorage.getItem(KEY_COMPLETED_DATES) || "{}");
   let dayMemos = JSON.parse(localStorage.getItem(KEY_MEMOS) || "{}");
+  let streakDates = new Set(JSON.parse(localStorage.getItem(KEY_STREAK_DATES) || "[]"));
   let currentTheme = localStorage.getItem(KEY_THEME) || "light";
   let deferredPrompt = null;
 
-  // DOM 요소를 가져옵니다
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const themeIcon = document.getElementById("theme-icon");
   const pwaInstallBtn = document.getElementById("pwa-install-btn");
@@ -27,14 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const completedCountEl = document.getElementById("completed-count");
   const totalCountEl = document.getElementById("total-count");
   const remainingCountText = document.getElementById("remaining-count-text");
+  const todayDayTitle = document.getElementById("today-day-title");
   const todayContainer = document.getElementById("today-lesson-container");
+  const streakBadge = document.getElementById("streak-badge");
   const searchInput = document.getElementById("search-input");
   const searchClearBtn = document.getElementById("search-clear-btn");
   const expandAllBtn = document.getElementById("expand-all-btn");
   const collapseAllBtn = document.getElementById("collapse-all-btn");
   const curriculumContainer = document.getElementById("curriculum-container");
 
-  // 개인 노트 탭 요소
   const tabPhrasalBtn = document.getElementById("tab-phrasal-btn");
   const tabPronBtn = document.getElementById("tab-pron-btn");
   const phrasalBox = document.getElementById("phrasal-note-box");
@@ -43,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const pronInput = document.getElementById("pron-input");
   const noteStatus = document.getElementById("note-status");
 
-  // 1. 다크모드 설정
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
@@ -56,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(currentTheme);
   });
 
-  // 2. 전체 강의 목록 추출
   const allLessons = [];
   CURRICULUM_DATA.forEach(item => {
     item.lessons.forEach(lesson => {
@@ -64,7 +60,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 3. Day별 커리큘럼 렌더링
+  // 연속 학습 일수 계산
+  function updateStreak() {
+    const sorted = Array.from(streakDates).sort();
+    let streak = 0;
+    const today = new Date().toISOString().split("T")[0];
+
+    if (streakDates.has(today)) {
+      streak = 1;
+      let checkDate = new Date();
+      while (true) {
+        checkDate.setDate(checkDate.getDate() - 1);
+        const dateStr = checkDate.toISOString().split("T")[0];
+        if (streakDates.has(dateStr)) {
+          streak++;
+        } else {
+          break;
+        }
+      }
+    }
+    streakBadge.textContent = `🔥 ${streak}일 연속`;
+  }
+
   function renderCurriculum(filterQuery = "") {
     curriculumContainer.innerHTML = "";
     const query = filterQuery.trim().toLowerCase();
@@ -84,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const dayCompletedCount = dayData.lessons.filter(l => completedIds.has(l.id)).length;
       const isDayFullyDone = dayCompletedCount === dayData.lessons.length && dayData.lessons.length > 0;
       
-      // 완료 날짜 자동 업데이트
       if (isDayFullyDone && !completedDates[dayData.day]) {
         const todayStr = new Date().toLocaleDateString("ko-KR", { month: "short", day: "numeric" });
         completedDates[dayData.day] = todayStr;
@@ -95,9 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ? `<span class="date-badge">✓ ${completedDates[dayData.day]} 완료</span>` 
         : '';
 
-      const isReviewed = dayReviews[dayData.day] || false;
-
-      // 미션 HTML 생성
+      // 미션 HTML
       let missionsHtml = '';
       if (dayData.mission && dayData.mission.length > 0) {
         missionsHtml = `
@@ -117,11 +131,22 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
       }
 
+      // 복습 일정 HTML
+      let reviewHtml = '';
+      if (dayData.review && dayData.review.length > 0) {
+        reviewHtml = `
+          <div class="day-section-title" style="margin-top:6px;">🔄 권장 복습 일정</div>
+          <div class="review-list">
+            ${dayData.review.map(r => `<span class="review-tag">📌 ${r}</span>`).join('')}
+          </div>
+        `;
+      }
+
       dayCard.innerHTML = `
         <div class="level-header">
           <div class="level-title-area">
             <h3>${dayData.day}: ${dayData.goal}</h3>
-            <p>⏱️ 예상 학습시간: ${dayData.studyTime}</p>
+            <p>⏱️ 시간: ${dayData.studyTime}</p>
           </div>
           <div class="level-meta">
             ${dateBadgeHtml}
@@ -133,23 +158,18 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="day-body">
           ${missionsHtml}
 
-          <div class="day-section-title">📚 강의 목록</div>
+          <div class="day-section-title" style="margin-top:4px;">📚 강의 목록</div>
           <div class="lessons-list"></div>
 
-          <div class="day-memo-section">
-            <div class="memo-header">
-              <span class="day-section-title">📝 오늘 배운 내용 / 기록</span>
-              <label class="review-check-label">
-                <input type="checkbox" class="review-check" data-day="${dayData.day}" ${isReviewed ? 'checked' : ''}>
-                <span>복습 완료</span>
-              </label>
-            </div>
-            <textarea class="day-memo-input" data-day="${dayData.day}" placeholder="오늘 배운 표현, 느낀점, 복습할 내용을 5분 동안 간단히 남겨보세요."></textarea>
+          ${reviewHtml}
+
+          <div class="day-memo-section" style="margin-top:6px;">
+            <div class="day-section-title">📝 오늘 학습 메모</div>
+            <textarea class="day-memo-input" data-day="${dayData.day}" placeholder="${dayData.memoPlaceholder || '오늘 배운 내용을 간단히 기록해보세요.'}"></textarea>
           </div>
         </div>
       `;
 
-      // 강의 목록 생성
       const lessonsList = dayCard.querySelector(".lessons-list");
       const targetLessons = query !== "" && !isMatchingDay ? filteredLessons : dayData.lessons;
 
@@ -172,31 +192,20 @@ document.addEventListener("DOMContentLoaded", () => {
         lessonsList.appendChild(lessonEl);
       });
 
-      // 기존 메모값 로드
       const memoInput = dayCard.querySelector(".day-memo-input");
       if (dayMemos[dayData.day]) {
         memoInput.value = dayMemos[dayData.day];
       }
 
-      // 메모 입력 시 자동 저장
       memoInput.addEventListener("input", (e) => {
         dayMemos[dayData.day] = e.target.value;
         localStorage.setItem(KEY_MEMOS, JSON.stringify(dayMemos));
       });
 
-      // 복습 체크 변경
-      const reviewChk = dayCard.querySelector(".review-check");
-      reviewChk.addEventListener("change", (e) => {
-        dayReviews[dayData.day] = e.target.checked;
-        localStorage.setItem(KEY_REVIEWS, JSON.stringify(dayReviews));
-      });
-
-      // 클릭 시 접힘 방지
       dayCard.querySelector(".day-body").addEventListener("click", (e) => {
         e.stopPropagation();
       });
 
-      // Header 아코디언 토글
       const header = dayCard.querySelector(".level-header");
       header.addEventListener("click", () => {
         dayCard.classList.toggle("collapsed");
@@ -210,7 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 4. 전체 진행률 업데이트
   function updateProgress() {
     const total = allLessons.length;
     const completed = completedIds.size;
@@ -223,22 +231,24 @@ document.addEventListener("DOMContentLoaded", () => {
     remainingCountText.textContent = `남은 강의: ${total - completed}강`;
 
     renderTodayLesson();
+    updateStreak();
   }
 
-  // 5. 오늘의 추천 학습 업데이트
   function renderTodayLesson() {
     const nextLesson = allLessons.find(l => !completedIds.has(l.id));
 
     if (!nextLesson) {
+      todayDayTitle.textContent = "🏆 30일 완강 달성!";
       todayContainer.innerHTML = `
-        <div class="today-item-title" style="color:var(--primary-color);">🎉 축하합니다! 30일 완강을 성공적으로 달성하셨습니다!</div>
-        <div class="today-item-meta">꾸준함으로 만들어낸 소중한 결과입니다. 계속해서 영어를 즐겨보세요!</div>
+        <div class="today-item-title" style="color:var(--primary-color);">🎉 축하합니다! 30일 완강을 성황리에 마쳤습니다!</div>
+        <div class="today-item-meta">나만의 소중한 영어 스피킹 습관이 완성되었습니다. 계속해서 활용해 보세요!</div>
       `;
       return;
     }
 
+    todayDayTitle.textContent = `🔥 오늘의 추천 학습 (${nextLesson.day})`;
     todayContainer.innerHTML = `
-      <div class="today-item-title">${nextLesson.day}: ${nextLesson.title}</div>
+      <div class="today-item-title">${nextLesson.title}</div>
       <div class="today-item-meta">
         <span>🎯 목표: ${nextLesson.goal}</span>
         <span>⏱️ ${nextLesson.duration}</span>
@@ -246,7 +256,6 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  // 6. 강의 및 미션 체크박스 이벤트 통합
   curriculumContainer.addEventListener("change", (e) => {
     // 강의 체크박스
     if (e.target.classList.contains("lesson-check")) {
@@ -256,6 +265,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.target.checked) {
         completedIds.add(lessonId);
         lessonItem.classList.add("completed");
+
+        // 오늘 날짜 streak에 기록
+        const todayStr = new Date().toISOString().split("T")[0];
+        streakDates.add(todayStr);
+        localStorage.setItem(KEY_STREAK_DATES, JSON.stringify(Array.from(streakDates)));
       } else {
         completedIds.delete(lessonId);
         lessonItem.classList.remove("completed");
@@ -264,7 +278,6 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem(KEY_COMPLETED, JSON.stringify(Array.from(completedIds)));
       updateProgress();
 
-      // Day 완료 배지 개수 갱신
       const dayCard = e.target.closest(".level-group");
       if (dayCard) {
         const dayStr = dayCard.dataset.day;
@@ -293,7 +306,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 7. 검색 기능
   searchInput.addEventListener("input", (e) => {
     const val = e.target.value;
     searchClearBtn.classList.toggle("hidden", val === "");
@@ -306,7 +318,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCurriculum("");
   });
 
-  // 8. 전체 접기 / 펼치기
   expandAllBtn.addEventListener("click", () => {
     document.querySelectorAll(".level-group").forEach(el => el.classList.remove("collapsed"));
   });
@@ -315,7 +326,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".level-group").forEach(el => el.classList.add("collapsed"));
   });
 
-  // 9. 개인 노트 (구동사 / 발음 노트 탭 및 저장)
   tabPhrasalBtn.addEventListener("click", () => {
     tabPhrasalBtn.classList.add("active");
     tabPronBtn.classList.remove("active");
@@ -345,7 +355,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => { noteStatus.textContent = "자동 저장됨"; }, 1500);
   });
 
-  // 10. Service Worker 등록
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js")
       .then(() => console.log("[SW] Registered"))
@@ -370,7 +379,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 초기화 실행
   renderCurriculum();
   updateProgress();
 });
